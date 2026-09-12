@@ -1,0 +1,7 @@
+{
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "workbench.editor.enablePreview": false,
+  "markdown.validate.enabled": true
+}
