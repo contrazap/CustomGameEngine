@@ -2,14 +2,14 @@
 
 ## Current state
 
-- **Phase:** Planning scaffold created; C++ implementation not started.
+- **Phase:** Native C++ development loop; environment verified and C++ implementation not started.
 - **Active milestone:** [R01 — Native C++ development loop](roadmap.md).
-- **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), pending.
-- **Resume at:** IP-001, step 1: inspect the native toolchain and select a supported build/debug route.
-- **User-managed next action:** Rename the folder to `CustomGameEngine`, reopen it, initialize Git, and push as desired. None of these actions has been performed by the agent.
-- **Known blockers:** None established. Toolchain availability has not been checked.
-- **Latest verification:** Documentation file-link scan passed (14 Markdown files, 46 local links); workspace settings JSON parsed and the Markdown editor association matched. Content reviewed for agreed scope, ownership, evidence states, and relative-path portability.
-- **Manual reporting:** Document-viewing behavior and all device/runtime checks are unreported.
+- **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), in progress.
+- **Resume at:** Await the user's request to start IP-001 step 2, the smallest buildable project.
+- **User-managed next action:** When ready, state that step 2 is starting or ask for its instructions; no step 2 guidance should be given before then.
+- **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
+- **Latest verification:** Visual Studio Community 2026 18.10.0 is complete and launchable. Developer-shell evidence confirms an ARM64 host and target using MSVC 19.51.36257, CMake 4.3.1-msvc1 with default `Visual Studio 18 2026` generator, MSBuild 18.10.1.42706, and Windows SDK 10.0.26100.0. VS Code has Microsoft C/C++ 1.34.4 and CMake Tools 1.24.42.
+- **Manual reporting:** IP-001 step 1 terminal discovery is confirmed by the user; document-viewing behavior and device/runtime checks remain unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,30 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-12 — Step-paced guidance and pause before IP-001 step 2
+
+- The user confirmed in Developer PowerShell that CMake, MSVC, and Ninja are discoverable. Clang is absent and is not required for the selected MSVC route.
+- Added a repository instruction requiring agents to wait for the user to initiate each upcoming implementation-plan step before providing its instructions, implementation details, starter code, or commands.
+- IP-001 step 2 has not started. Next action: wait for the user to initiate it.
+- Environment: Git revision `0adfa66`; evidence applies to the current worktree with documentation changes.
+
+### 2026-09-12 — IP-001 step 1 toolchain verified
+
+- Completed environment confirmation with Visual Studio Community 2026 18.10.0 and the native MSVC/CMake route.
+- Evidence: the developer environment reports `VSCMD_ARG_HOST_ARCH=arm64` and `VSCMD_ARG_TGT_ARCH=arm64`; `cl /Bv` identifies MSVC 19.51.36257 for ARM64 from `HostARM64/ARM64`; CMake 4.3.1-msvc1 defaults to the `Visual Studio 18 2026` generator; MSBuild is 18.10.1.42706; the selected Windows SDK is 10.0.26100.0.
+- VS Code 1.137.0 has Microsoft C/C++ 1.34.4, CMake Tools 1.24.42, and the C++ development tools dependency installed.
+- PowerShell policy check found every explicit scope undefined, producing the Windows PowerShell default effective `Restricted` policy. Verification used a process-only bypass; no persistent execution-policy setting was changed.
+- Environment: Git revision `0adfa66`; evidence applies to the current worktree with the IP-001 and Progress Log documentation changes.
+- Next action: IP-001 step 2, create and build the smallest CMake project.
+
+### 2026-09-12 — IP-001 step 1 environment discovery
+
+- Selected native MSVC targeting ARM64, CMake with a Visual Studio generator, and the Microsoft C++ debugger in VS Code as the initial Windows route.
+- Evidence: Windows 11 25H2 build 26200.9445; OS architecture and PowerShell process architecture both ARM64; VS Code 1.137.0 reports ARM64. `Get-Command` found no MSVC/Clang compiler, CMake, Ninja, Make, or MSBuild; Visual Studio Installer discovery found no Visual Studio installation.
+- The Microsoft C/C++ and CMake Tools extensions are also absent. No compiler version or generated executable target can be verified until installation.
+- Environment: Git revision `0adfa66`; worktree was clean before this documentation checkpoint.
+- Next action: install the selected build tools and extensions, use the ARM64 developer environment, and record the compiler/CMake versions and verified ARM64 target.
 
 ### 2026-09-12 — Planning scaffold
 

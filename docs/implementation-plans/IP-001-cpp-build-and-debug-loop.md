@@ -3,10 +3,10 @@
 | Field | Value |
 | --- | --- |
 | Roadmap milestone | [R01](../roadmap.md) |
-| Status | Pending |
+| Status | In progress |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
-| Depends on | No earlier implementation; directory rename/Git setup are user-managed |
-| Resume at | Step 1: inspect the native toolchain and select a supported build/debug route |
+| Depends on | No earlier implementation; directory rename and Git setup are complete |
+| Resume at | Await the user's request to start step 2: create the smallest buildable project |
 
 ## Outcome
 
@@ -43,6 +43,10 @@ These discovery commands do not install anything. If tools are missing, ask the 
 **Check:** Identify a supported way to compile and debug Windows ARM64. Record missing tools and an actionable next step if setup is incomplete.
 
 **Checkpoint:** Toolchain route recorded; no engine dependency decision is needed.
+
+**Recorded discovery (2026-09-12):** The host is Windows 11 25H2 build 26200.9445 on ARM64; both the OS and VS Code 1.137.0 processes are native ARM64. No Visual Studio installation, MSVC/Clang compiler, CMake, Ninja, MSBuild, or native debugger was found. The selected route is native MSVC targeting ARM64, CMake with a Visual Studio generator, and the Microsoft C++ debugger in VS Code. Install the Visual Studio C++ build tools with the ARM64 compiler tools, Windows 11 SDK, and CMake tools for Windows, plus the Microsoft C/C++ and CMake Tools VS Code extensions. After installation, repeat discovery in the matching ARM64 developer environment and record actual versions and target output before completing this step.
+
+**Installed verification (2026-09-12):** Visual Studio Community 2026 18.10.0 is installed with MSVC 19.51.36257, CMake 4.3.1-msvc1, MSBuild 18.10.1.42706, and Windows SDK 10.0.26100.0. Developer-shell variables and compiler paths confirm native ARM64 host and ARM64 target tools. CMake selects `Visual Studio 18 2026` as its default generator and also provides Ninja. VS Code 1.137.0 has Microsoft C/C++ 1.34.4 and CMake Tools 1.24.42. The Windows PowerShell effective default policy is `Restricted`, so direct invocation of `Launch-VsDevShell.ps1` requires a process-scoped bypass, a `CurrentUser` policy such as `RemoteSigned`, or use of the Developer Command Prompt; this does not invalidate the toolchain verification.
 
 ## 2. Create the smallest buildable project
 
@@ -99,7 +103,7 @@ If an agent runs this check, record its actual evidence. Otherwise provide the u
 
 | Step | Implementation status | Agent/automated evidence | Manual reporting state |
 | --- | --- | --- | --- |
-| 1. Environment | Pending | Not run | Unreported |
+| 1. Environment | Complete | Visual Studio Community 2026 18.10.0; MSVC 19.51.36257 for ARM64 using `HostARM64/ARM64`; CMake 4.3.1-msvc1; MSBuild 18.10.1.42706; Windows SDK 10.0.26100.0; VS Code C++ and CMake extensions installed | Confirmed: user showed Developer PowerShell discovering CMake, MSVC, and Ninja; Clang is absent and is not required for the selected route |
 | 2. Buildable project | Pending | Not run | Not applicable |
 | 3. Tank state | Pending | Not run | Unreported |
 | 4. Debug transition | Pending | Not run | Unreported |
@@ -109,6 +113,6 @@ No C++ source, toolchain configuration, or executable has been created by this p
 
 ## Resume and follow-up
 
-Next action: inspect the available native C++ toolchain after the user has reopened the renamed directory. Do not assume tool installation or Git setup has happened.
+Next action: wait for the user to state that they are starting step 2 or request its instructions. Do not provide step 2 implementation guidance before then.
 
 The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.

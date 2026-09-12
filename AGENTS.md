@@ -6,6 +6,10 @@ This repository supports user-led implementation of C++ programs, games, and a p
 
 User instructions in the current conversation take precedence over this workflow. Do not introduce approval gates for routine authorized work. Do not rename the project, initialize Git, commit, or push unless requested. The initial directory rename and Git setup are reserved for the user.
 
+## User-paced plan steps
+
+Treat implementation-plan steps as user-paced. When a step is completed or verified, state its result and identify the next step by name, but do not provide instructions, implementation details, starter code, or commands for that next step unless the user explicitly says they are starting it or asks for its instructions. Wait for the user to initiate each upcoming step. Read-only reconciliation and required checkpoint updates may still be performed without advancing implementation.
+
 ## Reading order
 
 At the beginning of relevant project work:
