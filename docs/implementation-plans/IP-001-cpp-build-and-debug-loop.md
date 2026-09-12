@@ -6,7 +6,7 @@
 | Status | In progress |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
 | Depends on | No earlier implementation; directory rename and Git setup are complete |
-| Resume at | Await the user's request to start step 2: create the smallest buildable project |
+| Resume at | Await the user's request to start step 3: represent and update tank state |
 
 ## Outcome
 
@@ -50,7 +50,7 @@ These discovery commands do not install anything. If tools are missing, ask the 
 
 ## 2. Create the smallest buildable project
 
-**Build:** Create a root CMake project and `exercises/01-tank-state/main.cpp`. Define one executable target, `tank_state`, with C++20 required and compiler extensions disabled. Keep generated build files under a dedicated `build/` directory. Add ignore rules for generated output after the actual generator is selected.
+**Build:** Create a CMake project rooted at `projects/` and `projects/exercises/01-tank-state/main.cpp`. Define one executable target, `tank_state`, with C++20 required and compiler extensions disabled. Keep generated build files under a dedicated root-level `build/` directory. Add ignore rules for generated output after the actual generator is selected.
 
 Start with one source file that prints a recognizable message and returns success. Do not add classes, custom allocators, engine modules, or test dependencies yet.
 
@@ -66,6 +66,8 @@ cmake --build build/<preset-or-target> --config Debug
 These contain placeholders and are not ready-to-run commands. Executable location depends on the chosen generator. Resolve it in the implementation session and document the actual command.
 
 **Checkpoint:** One working executable and repeatable commands. This is a useful stopping point even if later steps remain pending.
+
+**Recorded verification (2026-09-12):** From the repository root in Developer PowerShell, `cmake -S projects -B build/windows-arm64 -G "Visual Studio 18 2026" -A ARM64` configured successfully, `cmake --build build/windows-arm64 --config Debug` built the Debug target, and `.\build\windows-arm64\Debug\tank_state.exe` printed `Tank state exercise` with exit code `0`. `dumpbin /headers` reported `AA64 machine (ARM64)`. The root `/build/` directory is ignored by Git.
 
 ## 3. Represent and update tank state
 
@@ -104,15 +106,15 @@ If an agent runs this check, record its actual evidence. Otherwise provide the u
 | Step | Implementation status | Agent/automated evidence | Manual reporting state |
 | --- | --- | --- | --- |
 | 1. Environment | Complete | Visual Studio Community 2026 18.10.0; MSVC 19.51.36257 for ARM64 using `HostARM64/ARM64`; CMake 4.3.1-msvc1; MSBuild 18.10.1.42706; Windows SDK 10.0.26100.0; VS Code C++ and CMake extensions installed | Confirmed: user showed Developer PowerShell discovering CMake, MSVC, and Ninja; Clang is absent and is not required for the selected route |
-| 2. Buildable project | Pending | Not run | Not applicable |
+| 2. Buildable project | Complete | Configure and Debug build succeeded; executable printed `Tank state exercise`, returned `0`, and was verified as `AA64 machine (ARM64)` | Confirmed: user supplied terminal output for configure, build, run, and exit code |
 | 3. Tank state | Pending | Not run | Unreported |
 | 4. Debug transition | Pending | Not run | Unreported |
 | 5. Repeatability | Pending | Not run | Not applicable |
 
-No C++ source, toolchain configuration, or executable has been created by this plan's generation. The only existing VS Code settings concern document viewing.
+The initial C++ source, CMake target, ignored build tree, and verified Windows ARM64 Debug executable now exist. The only existing VS Code settings concern document viewing.
 
 ## Resume and follow-up
 
-Next action: wait for the user to state that they are starting step 2 or request its instructions. Do not provide step 2 implementation guidance before then.
+Next action: wait for the user to state that they are starting step 3 or request its instructions. Do not provide step 3 implementation guidance before then.
 
 The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.

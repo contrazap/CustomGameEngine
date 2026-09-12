@@ -3,5 +3,6 @@
     "*.md": "vscode.markdown.preview.editor"
   },
   "workbench.editor.enablePreview": false,
-  "markdown.validate.enabled": true
+  "markdown.validate.enabled": true,
+  "cmake.sourceDirectory": "C:/MyFiles/Projects/CustomGameEngine/projects"
 }

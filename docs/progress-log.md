@@ -2,14 +2,14 @@
 
 ## Current state
 
-- **Phase:** Native C++ development loop; environment verified and C++ implementation not started.
+- **Phase:** Native C++ development loop; smallest Windows ARM64 C++ project built and run successfully.
 - **Active milestone:** [R01 — Native C++ development loop](roadmap.md).
 - **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), in progress.
-- **Resume at:** Await the user's request to start IP-001 step 2, the smallest buildable project.
-- **User-managed next action:** When ready, state that step 2 is starting or ask for its instructions; no step 2 guidance should be given before then.
+- **Resume at:** Await the user's request to start IP-001 step 3, represent and update tank state.
+- **User-managed next action:** When ready, state that step 3 is starting or ask for its instructions; no step 3 guidance should be given before then.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** Visual Studio Community 2026 18.10.0 is complete and launchable. Developer-shell evidence confirms an ARM64 host and target using MSVC 19.51.36257, CMake 4.3.1-msvc1 with default `Visual Studio 18 2026` generator, MSBuild 18.10.1.42706, and Windows SDK 10.0.26100.0. VS Code has Microsoft C/C++ 1.34.4 and CMake Tools 1.24.42.
-- **Manual reporting:** IP-001 step 1 terminal discovery is confirmed by the user; document-viewing behavior and device/runtime checks remain unreported.
+- **Latest verification:** IP-001 step 2 configured and built `tank_state` with Visual Studio 18 2026 for ARM64. The executable printed `Tank state exercise`, returned `0`, and `dumpbin /headers` identified `AA64 machine (ARM64)`.
+- **Manual reporting:** IP-001 steps 1 and 2 terminal results are confirmed by the user; document-viewing behavior and later debugger/device checks remain unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,20 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-12 — IP-001 step 2 complete
+
+- Created the CMake project under `projects/`, the initial `tank_state` source, and a root `/build/` ignore rule.
+- In Developer PowerShell, Visual Studio 18 2026 configuration for ARM64 and the Debug build succeeded. The executable printed `Tank state exercise` and returned exit code `0`; `dumpbin /headers` reported `AA64 machine (ARM64)`.
+- Environment: Git revision `760fd50`; evidence applies to a dirty worktree containing the new `.gitignore` and `projects/` files, documentation checkpoint changes, and an unrelated modified `.vscode/settings.json`.
+- Next action: wait for the user to initiate IP-001 step 3.
+
+### 2026-09-12 — IP-001 step 2 layout started
+
+- Adopted `projects/` as the implementation umbrella, separate from `docs/`; exercises, the future reusable engine, games, and samples remain distinct categories beneath it as they become necessary.
+- Verified `projects/CMakeLists.txt` and `projects/exercises/01-tank-state/main.cpp` exist in the intended layout. Both files are empty, so configure/build/run verification is not yet available.
+- Step 2 is in progress. Next action: populate the two files, then configure, build, and run `tank_state`.
+- The worktree also contains an unrelated modified `.vscode/settings.json`; it was not changed during this verification.
 
 ### 2026-09-12 — Step-paced guidance and pause before IP-001 step 2
 
