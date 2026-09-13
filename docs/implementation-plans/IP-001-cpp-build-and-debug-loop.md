@@ -3,10 +3,10 @@
 | Field | Value |
 | --- | --- |
 | Roadmap milestone | [R01](../roadmap.md) |
-| Status | In progress |
+| Status | Complete |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
 | Depends on | No earlier implementation; directory rename and Git setup are complete |
-| Resume at | Await the user's request to start step 5: make the loop repeatable |
+| Resume at | Plan complete; await the user's request for the next implementation plan |
 
 ## Outcome
 
@@ -99,6 +99,8 @@ If an agent runs this check, record its actual evidence. Otherwise provide the u
 
 ## 5. Make the loop repeatable
 
+**Completed (2026-09-13):** Added a short exercise README with the exact ARM64 configure, build, run, expected-output, and VS Code CMake Tools debug workflow. From Developer PowerShell, the user configured a new `build/ip001-repeatability-arm64` directory, built Debug without reported warnings, ran the executable with the expected three positions, and verified `AA64 machine (ARM64)` using `dumpbin`. The root `/build/` ignore rule covers the fresh generated tree.
+
 **Build:** Add a short exercise README with exact configure/build/run/debug instructions and expected output. Use CMake presets if they reduce repeated options; keep machine-specific paths out of shared presets. Ensure generated files are excluded from version control.
 
 **Check:** Configure into a second fresh build directory and build/run there to check that instructions do not depend on stale generated state. No deletion is required for this check. Inspect warnings and address relevant ones. Check the resulting target architecture using the selected toolchain's appropriate inspection facility.
@@ -113,12 +115,12 @@ If an agent runs this check, record its actual evidence. Otherwise provide the u
 | 2. Buildable project | Complete | Configure and Debug build succeeded; executable printed `Tank state exercise`, returned `0`, and was verified as `AA64 machine (ARM64)` | Confirmed: user supplied terminal output for configure, build, run, and exit code |
 | 3. Tank state | Complete | ARM64 Debug build succeeded; output showed `(2, 3)`, `(3, 3)`, and `(1, 2)` | Confirmed: user and agent observed the expected transitions |
 | 4. Debug transition | Complete | VS Code CMake Tools built and launched the ARM64 Debug target with symbols; breakpoint, stack frame, arguments, step-into behavior, and state changes were observed | Confirmed: user supplied screenshots showing `(2, 3)` to `(3, 3)`, the later `(1, 2)` state, and exit code `0` |
-| 5. Repeatability | Pending | Not run | Not applicable |
+| 5. Repeatability | Complete | Fresh ARM64 configure and Debug build succeeded without reported warnings; expected output and `AA64 machine (ARM64)` were verified; generated tree is ignored | Confirmed: user supplied terminal screenshots for configure, build, run, and architecture inspection |
 
-The initial C++ source, CMake target, ignored build tree, and verified Windows ARM64 Debug executable now exist. The only existing VS Code settings concern document viewing.
+The initial C++ source, CMake target, ignored build tree, and verified Windows ARM64 Debug executable now exist. VS Code settings cover document viewing and the CMake source directory; no checked-in `launch.json` or `tasks.json` is required for the verified CMake Tools workflow.
 
 ## Resume and follow-up
 
-Next action: wait for the user to initiate step 5, make the loop repeatable. Do not provide step 5 guidance before then.
+IP-001 is complete. The next milestone is R02, Console game model; generate its implementation plan only when requested.
 
 The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.

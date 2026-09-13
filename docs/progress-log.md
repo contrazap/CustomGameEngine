@@ -2,14 +2,14 @@
 
 ## Current state
 
-- **Phase:** Native C++ development loop; IP-001 step 4, debug a state transition, is complete.
-- **Active milestone:** [R01 — Native C++ development loop](roadmap.md).
-- **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), in progress.
-- **Resume at:** Await the user's request to start IP-001 step 5, make the loop repeatable.
-- **User-managed next action:** When ready, state that step 5 is starting or ask for its instructions; no step 5 guidance should be given before then.
+- **Phase:** Native C++ development loop complete.
+- **Active milestone:** [R01 — Native C++ development loop](roadmap.md), complete; R02 is next but not started.
+- **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), complete.
+- **Resume at:** Await the user's request to generate the next implementation plan for R02, Console game model.
+- **User-managed next action:** When ready, request the next implementation plan; no R02 implementation guidance should be given before then.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** VS Code CMake Tools built and launched `build/Debug/tank_state.exe` with symbols. User screenshots showed the first breakpoint at `(2, 3)`, the `moveTank` stack frame with arguments `(1, 0)`, `x` changing to `3`, return to `main` at `(3, 3)`, the later `(1, 2)` state, and exit code `0`. The corresponding CMake cache records generator platform `arm64`.
-- **Manual reporting:** IP-001 steps 1–4 are confirmed by the user; document-viewing behavior remains unreported.
+- **Latest verification:** From Developer PowerShell, a fresh `build/ip001-repeatability-arm64` tree configured with Visual Studio 18 2026 for ARM64, built Debug without reported warnings, printed `(2, 3)`, `(3, 3)`, and `(1, 2)`, and was identified by `dumpbin` as `AA64 machine (ARM64)`. The generated tree is covered by the root `/build/` ignore rule.
+- **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user; document-viewing behavior remains unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,20 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-13 — IP-001 step 5 and plan complete
+
+- Added `projects/exercises/01-tank-state/README.md` with exact ARM64 configure, build, run, expected-output, and VS Code CMake Tools debug instructions.
+- In Developer PowerShell, the user configured the new `build/ip001-repeatability-arm64` directory with Visual Studio 18 2026 targeting ARM64, built Debug without reported warnings, and ran the executable with the expected `(2, 3)`, `(3, 3)`, and `(1, 2)` output. `dumpbin` reported `AA64 machine (ARM64)`.
+- `git check-ignore` confirms the root `/build/` rule covers the fresh generated tree. Evidence applies to the working tree at Git revision `6655a52` with the new exercise README and documentation checkpoint edits; no source or build configuration changed.
+- IP-001 and R01 are complete with no unresolved ARM64 or debugger limitation. Next action: wait for the user to request the implementation plan for R02, Console game model.
+
+### 2026-09-13 — IP-001 step 5 started
+
+- The user initiated step 5 with one instruction at a time. Reconciled the implementation-plan index status and the active plan's description of existing VS Code settings.
+- Added `projects/exercises/01-tank-state/README.md` with the verified ARM64 configure, build, run, expected-output, and VS Code CMake Tools debug workflow. No presets or build configuration were added.
+- Environment: clean worktree at Git revision `6655a52` before this documentation checkpoint. No source or build configuration changed.
+- Next action: configure into a second fresh build directory using the documented ARM64 command.
 
 ### 2026-09-13 — IP-001 step 4 complete
 

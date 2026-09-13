@@ -4,7 +4,7 @@ Generate plans on demand using [Plan Generation Instructions](../plan-generation
 
 | ID | Plan | Roadmap | Status |
 | --- | --- | --- | --- |
-| IP-001 | [Establish the C++ Build and Debug Loop](IP-001-cpp-build-and-debug-loop.md) | R01 | Pending |
+| IP-001 | [Establish the C++ Build and Debug Loop](IP-001-cpp-build-and-debug-loop.md) | R01 | Complete |
 
 Next available identifier: **IP-002**. Do not allocate it until the next plan is created.
 

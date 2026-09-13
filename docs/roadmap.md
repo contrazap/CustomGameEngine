@@ -2,7 +2,7 @@
 
 This is the long-term sequence, not a pre-generated backlog. Generate implementation plans on demand using [Plan Generation Instructions](plan-generation-instructions.md). [Project Overview](project-overview.md) owns goals and constraints; [Progress Log](progress-log.md) owns current state.
 
-All milestones below are **planned**. A completion result includes a runnable artifact, enough documentation to use it again, and honest verification records. Manual results may remain unreported without blocking progress.
+R01 is complete; R02–R10 remain planned. A completion result includes a runnable artifact, enough documentation to use it again, and honest verification records. Manual results may remain unreported without blocking progress.
 
 | ID | Milestone | Useful completion result |
 | --- | --- | --- |
