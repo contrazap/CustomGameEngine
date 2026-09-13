@@ -2,11 +2,11 @@
 
 ## Current state
 
-- **Phase:** Native C++ development loop complete.
-- **Active milestone:** [R01 — Native C++ development loop](roadmap.md), complete; R02 is next but not started.
-- **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), complete.
-- **Resume at:** Await the user's request to generate the next implementation plan for R02, Console game model.
-- **User-managed next action:** When ready, request the next implementation plan; no R02 implementation guidance should be given before then.
+- **Phase:** Console game model planned; implementation not started.
+- **Active milestone:** [R02 — Console game model](roadmap.md), pending; R01 is complete.
+- **Active plan:** [IP-002 — Playable Console Tank Grid](implementation-plans/IP-002-console-tank-grid.md), pending.
+- **Resume at:** Await the user initiating IP-002 step 1, display a small tank arena.
+- **User-managed next action:** Start step 1 when ready; subsequent steps remain user-paced.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
 - **Latest verification:** From Developer PowerShell, a fresh `build/ip001-repeatability-arm64` tree configured with Visual Studio 18 2026 for ARM64, built Debug without reported warnings, printed `(2, 3)`, `(3, 3)`, and `(1, 2)`, and was identified by `dumpbin` as `AA64 machine (ARM64)`. The generated tree is covered by the root `/build/` ignore rule.
 - **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user; document-viewing behavior remains unreported.
@@ -24,6 +24,14 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-13 — IP-002 generated
+
+- Created IP-002 for R02 at the user's request, with six pending steps covering a static arena, bounded movement, console input, win/loss/restart, source/header separation with focused rule checks, and final documentation/verification.
+- Scoped the game as deterministic tank navigation through walls and mines to extraction, using standard-library line input and a separate `tank_grid` target. These are local planning assumptions; no engine dependency or architecture decision changed.
+- Inspected the existing source, CMake target, and Git status: they agree with the completed IP-001 record. Environment: Windows/PowerShell, clean worktree at revision `8b40a8b` before documentation edits. No implementation or build/runtime checks were performed for IP-002.
+- Documentation verification: all 24 local links across the five affected planning documents resolved; `git diff --check` passed for tracked edits. The plan, index, and active-state pointers consistently record IP-002 as pending.
+- Next action: await the user initiating step 1, display a small tank arena.
 
 ### 2026-09-13 — IP-001 step 5 and plan complete
 

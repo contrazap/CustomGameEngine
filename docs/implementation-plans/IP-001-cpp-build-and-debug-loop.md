@@ -6,7 +6,7 @@
 | Status | Complete |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
 | Depends on | No earlier implementation; directory rename and Git setup are complete |
-| Resume at | Plan complete; await the user's request for the next implementation plan |
+| Resume at | Plan complete; continue with [IP-002](IP-002-console-tank-grid.md) when the user starts it |
 
 ## Outcome
 
@@ -121,6 +121,4 @@ The initial C++ source, CMake target, ignored build tree, and verified Windows A
 
 ## Resume and follow-up
 
-IP-001 is complete. The next milestone is R02, Console game model; generate its implementation plan only when requested.
-
-The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.
+IP-001 is complete. The next milestone is R02, Console game model, now covered by [IP-002 — Playable Console Tank Grid](IP-002-console-tank-grid.md). Its implementation remains pending until the user initiates the first step.
