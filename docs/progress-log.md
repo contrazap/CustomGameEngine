@@ -2,14 +2,14 @@
 
 ## Current state
 
-- **Phase:** Native C++ development loop; IP-001 step 3, represent and update tank state, is complete.
+- **Phase:** Native C++ development loop; IP-001 step 4, debug a state transition, is complete.
 - **Active milestone:** [R01 — Native C++ development loop](roadmap.md).
 - **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), in progress.
-- **Resume at:** Await the user's request to start IP-001 step 4, debug a state transition.
-- **User-managed next action:** When ready, state that step 4 is starting or ask for its instructions; no step 4 guidance should be given before then.
+- **Resume at:** Await the user's request to start IP-001 step 5, make the loop repeatable.
+- **User-managed next action:** When ready, state that step 5 is starting or ask for its instructions; no step 5 guidance should be given before then.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** IP-001 step 3 built successfully for ARM64 Debug and printed `(2, 3)`, `(3, 3)`, and `(1, 2)` in sequence, covering positive and negative movement. Both the user and agent observed the final output.
-- **Manual reporting:** IP-001 steps 1–3 terminal results are confirmed by the user; document-viewing behavior and the step 4 debugger check remain unreported.
+- **Latest verification:** VS Code CMake Tools built and launched `build/Debug/tank_state.exe` with symbols. User screenshots showed the first breakpoint at `(2, 3)`, the `moveTank` stack frame with arguments `(1, 0)`, `x` changing to `3`, return to `main` at `(3, 3)`, the later `(1, 2)` state, and exit code `0`. The corresponding CMake cache records generator platform `arm64`.
+- **Manual reporting:** IP-001 steps 1–4 are confirmed by the user; document-viewing behavior remains unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,19 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-13 — IP-001 step 4 complete
+
+- VS Code CMake Tools built and launched the ARM64 Debug target with symbols and stopped at the first movement breakpoint with `tank` at `(2, 3)`.
+- User screenshots confirmed stepping into `moveTank`, its stack frame and arguments `deltaX = 1` and `deltaY = 0`, `x` changing to `3`, and return to `main` with `tank` at `(3, 3)`. An earlier run showed the later `(1, 2)` state and exit code `0`.
+- Evidence applies to the working tree at Git revision `51f66a3` with documentation checkpoint edits. Next action: wait for the user to initiate IP-001 step 5, make the loop repeatable.
+
+### 2026-09-13 — IP-001 step 4 started
+
+- Reconciled the active plan's stale state table with the completed step 3 evidence and marked step 4 in progress at the user's request.
+- The workspace has no `launch.json`; VS Code CMake Tools launched `build/Debug/tank_state.exe` directly with symbols and stopped on the first movement breakpoint. User screenshots showed the state at `(2, 3)`, `(3, 3)`, and `(1, 2)`, then exit code `0`.
+- The `build/CMakeCache.txt` generator platform is `arm64`, confirming that this separate CMake Tools build tree also targets ARM64. Evidence applies to the working tree at Git revision `51f66a3` with documentation checkpoint edits.
+- Next action: repeat the debug run, stop before the first `moveTank` call, and step into the function.
 
 ### 2026-09-13 — IP-001 step 3 complete
 

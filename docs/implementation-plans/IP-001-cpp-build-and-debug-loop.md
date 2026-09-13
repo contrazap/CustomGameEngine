@@ -6,7 +6,7 @@
 | Status | In progress |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
 | Depends on | No earlier implementation; directory rename and Git setup are complete |
-| Resume at | Await the user's request to start step 4: debug a state transition |
+| Resume at | Await the user's request to start step 5: make the loop repeatable |
 
 ## Outcome
 
@@ -85,6 +85,8 @@ Keep the operation deterministic. For example, starting at `(2, 3)` and moving o
 
 ## 4. Debug a state transition
 
+**Completed (2026-09-13):** VS Code CMake Tools built and launched the ARM64 Debug target with symbols. A breakpoint stopped before the first movement with `tank` at `(2, 3)`. The user stepped into `moveTank`, inspected its stack frame and arguments `deltaX = 1`, `deltaY = 0`, observed `x` change to `3`, and returned to `main` with the state at `(3, 3)`. The earlier run also showed the second transition to `(1, 2)` and exit code `0`.
+
 **Build:** Configure a debugger for the selected toolchain, using workspace-relative paths. Set a breakpoint before movement, inspect the position, step into the function, and inspect the changed result.
 
 If an agent runs this check, record its actual evidence. Otherwise provide the user with the short checklist above. The user may continue without reporting the observation.
@@ -109,14 +111,14 @@ If an agent runs this check, record its actual evidence. Otherwise provide the u
 | --- | --- | --- | --- |
 | 1. Environment | Complete | Visual Studio Community 2026 18.10.0; MSVC 19.51.36257 for ARM64 using `HostARM64/ARM64`; CMake 4.3.1-msvc1; MSBuild 18.10.1.42706; Windows SDK 10.0.26100.0; VS Code C++ and CMake extensions installed | Confirmed: user showed Developer PowerShell discovering CMake, MSVC, and Ninja; Clang is absent and is not required for the selected route |
 | 2. Buildable project | Complete | Configure and Debug build succeeded; executable printed `Tank state exercise`, returned `0`, and was verified as `AA64 machine (ARM64)` | Confirmed: user supplied terminal output for configure, build, run, and exit code |
-| 3. Tank state | Pending | Not run | Unreported |
-| 4. Debug transition | Pending | Not run | Unreported |
+| 3. Tank state | Complete | ARM64 Debug build succeeded; output showed `(2, 3)`, `(3, 3)`, and `(1, 2)` | Confirmed: user and agent observed the expected transitions |
+| 4. Debug transition | Complete | VS Code CMake Tools built and launched the ARM64 Debug target with symbols; breakpoint, stack frame, arguments, step-into behavior, and state changes were observed | Confirmed: user supplied screenshots showing `(2, 3)` to `(3, 3)`, the later `(1, 2)` state, and exit code `0` |
 | 5. Repeatability | Pending | Not run | Not applicable |
 
 The initial C++ source, CMake target, ignored build tree, and verified Windows ARM64 Debug executable now exist. The only existing VS Code settings concern document viewing.
 
 ## Resume and follow-up
 
-Next action: wait for the user to state that they are starting step 4 or request its instructions. Do not provide step 4 guidance before then.
+Next action: wait for the user to initiate step 5, make the loop repeatable. Do not provide step 5 guidance before then.
 
 The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.
