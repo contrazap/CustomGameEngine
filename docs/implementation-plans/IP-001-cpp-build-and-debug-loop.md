@@ -6,7 +6,7 @@
 | Status | In progress |
 | Implementation owner | User; agent provides setup assistance, explanation, review, and checks unless asked to implement |
 | Depends on | No earlier implementation; directory rename and Git setup are complete |
-| Resume at | Await the user's request to start step 3: represent and update tank state |
+| Resume at | Await the user's request to start step 4: debug a state transition |
 
 ## Outcome
 
@@ -71,6 +71,8 @@ These contain placeholders and are not ready-to-run commands. Executable locatio
 
 ## 3. Represent and update tank state
 
+**Completed (2026-09-13):** `TankState` contains an owned string name and integer coordinates. `moveTank(TankState&, int, int)` mutates the original state, while `printTankState(const TankState&)` observes it without copying or mutation. ARM64 Debug builds run successfully and print `(2, 3)`, `(3, 3)`, and `(1, 2)` in sequence, verifying positive and negative movement. Both the user and agent observed the final output.
+
 **Build:** Replace the initial message with a small `TankState` value containing a name and integer grid position. Print its initial state, apply a movement operation through a function, and print the result. Use standard-library facilities and automatic storage/ownership; no manual allocation is needed.
 
 Keep the operation deterministic. For example, starting at `(2, 3)` and moving one cell right should result in `(3, 3)`. Choosing an equivalent small example is fine.
@@ -115,6 +117,6 @@ The initial C++ source, CMake target, ignored build tree, and verified Windows A
 
 ## Resume and follow-up
 
-Next action: wait for the user to state that they are starting step 3 or request its instructions. Do not provide step 3 implementation guidance before then.
+Next action: wait for the user to state that they are starting step 4 or request its instructions. Do not provide step 4 guidance before then.
 
 The likely next outcome is a small console tank-grid loop with input commands and boundaries, introducing translation-unit separation, containers, and error handling when useful. Generate that plan only when requested or when moving to it is authorized; adapt to actual progress rather than a fixed syllabus.

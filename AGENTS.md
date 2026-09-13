@@ -36,6 +36,16 @@ On resume, inspect changes since the last checkpoint. Checkpoints are written du
 
 Use the smallest set of checks that addresses the change's actual risks. Run incremental builds and focused tests first. Broaden to integration, platform, visual, or performance checks when shared behavior, device compatibility, or milestone acceptance requires them. Do not rerun unchanged checks without a reason.
 
+### Windows CMake command environment
+
+The user's interactive **Developer PowerShell for Visual Studio** has `cmake` on `PATH`, but agent-run PowerShell sessions do not inherit that developer environment. In agent-run commands, do not first attempt bare `cmake`. Invoke the currently verified executable directly:
+
+```powershell
+& 'C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe' --build build/windows-arm64 --config Debug
+```
+
+Use the same executable for other configure or build operations. If that recorded path no longer exists after a Visual Studio update, locate the replacement before running CMake and update this instruction. This requirement applies to agent-run shells; commands shown to the user may use bare `cmake` when they are in Developer PowerShell.
+
 Verify behavior and meaningful boundaries, not private implementation details. A successful compile does not prove runtime correctness; a host build does not prove another target runs. Use sanitizers and analysis where supported and appropriate. When tools or devices are unavailable, record exactly what remains unverified and provide a short reproducible check for the user.
 
 Keep controls, game feel, visual quality, audio quality, and physical-device observations available for user review without requiring a report for each step. Treat unreported checks as evidence gaps to revisit during relevant debugging, not presumed causes.

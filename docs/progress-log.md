@@ -2,14 +2,14 @@
 
 ## Current state
 
-- **Phase:** Native C++ development loop; smallest Windows ARM64 C++ project built and run successfully.
+- **Phase:** Native C++ development loop; IP-001 step 3, represent and update tank state, is complete.
 - **Active milestone:** [R01 — Native C++ development loop](roadmap.md).
 - **Active plan:** [IP-001 — Establish the C++ Build and Debug Loop](implementation-plans/IP-001-cpp-build-and-debug-loop.md), in progress.
-- **Resume at:** Await the user's request to start IP-001 step 3, represent and update tank state.
-- **User-managed next action:** When ready, state that step 3 is starting or ask for its instructions; no step 3 guidance should be given before then.
+- **Resume at:** Await the user's request to start IP-001 step 4, debug a state transition.
+- **User-managed next action:** When ready, state that step 4 is starting or ask for its instructions; no step 4 guidance should be given before then.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** IP-001 step 2 configured and built `tank_state` with Visual Studio 18 2026 for ARM64. The executable printed `Tank state exercise`, returned `0`, and `dumpbin /headers` identified `AA64 machine (ARM64)`.
-- **Manual reporting:** IP-001 steps 1 and 2 terminal results are confirmed by the user; document-viewing behavior and later debugger/device checks remain unreported.
+- **Latest verification:** IP-001 step 3 built successfully for ARM64 Debug and printed `(2, 3)`, `(3, 3)`, and `(1, 2)` in sequence, covering positive and negative movement. Both the user and agent observed the final output.
+- **Manual reporting:** IP-001 steps 1–3 terminal results are confirmed by the user; document-viewing behavior and the step 4 debugger check remain unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,21 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-13 — IP-001 step 3 complete
+
+- Implemented a `TankState` aggregate with owned `std::string` name and integer coordinates, a mutating `moveTank(TankState&, int, int)` operation, and a read-only `printTankState(const TankState&)` observer.
+- The user built and ran the ARM64 Debug target in Developer PowerShell. An agent repeated the build with the explicit Visual Studio CMake path. Both runs produced `Player is at (2, 3)`, `(3, 3)`, and `(1, 2)` in sequence, covering positive and negative deltas.
+- Formatting review found consistent spacing and braces and exactly one final CRLF newline. Git reports that it will normalize the working file to LF when it next touches it; no whitespace error was reported.
+- Environment: Git revision `2391617`; evidence applies to a dirty worktree containing the step 3 source, plan/progress checkpoint edits, and the requested `AGENTS.md` CMake-shell instruction.
+- Next action: wait for the user to initiate IP-001 step 4, debug a state transition.
+
+### 2026-09-13 — IP-001 step 3 started
+
+- The user selected the native `Visual Studio Community 2026 Release - arm64` CMake kit in VS Code and explicitly started step 3 with one instruction at a time.
+- Added a `TankState` aggregate with a string name and integer coordinates, initialized `Player` at `(2, 3)`, and printed that initial state. The user confirmed the ARM64 Debug build and output `Player starts at (2, 3)` from Developer PowerShell.
+- Agent-run PowerShell does not inherit the developer-shell `PATH`; `AGENTS.md` now requires agents to use the verified Visual Studio CMake executable directly instead of first retrying a known-failing bare `cmake` command.
+- Evidence applies to the dirty worktree at the start of step 3. Next action: add the movement function, then inspect it before calling it.
 
 ### 2026-09-12 — IP-001 step 2 complete
 
