@@ -3,10 +3,10 @@
 | Field | Value |
 | --- | --- |
 | Roadmap milestone | [R02 — Console game model](../roadmap.md) |
-| Status | Pending |
+| Status | In progress |
 | Implementation owner | User; agent provides explanations, hints, review, and verification unless asked to implement |
 | Depends on | [IP-001](IP-001-cpp-build-and-debug-loop.md), complete; existing C++20 CMake project and verified Windows ARM64 development loop |
-| Resume at | Await the user initiating step 1, display a small tank arena |
+| Resume at | Await the user initiating step 2, apply movement with boundaries and walls |
 
 ## Outcome
 
@@ -153,7 +153,7 @@ Compare the original exercise's output with its [README](../../projects/exercise
 
 | Step | Implementation status | Agent/automated evidence | Manual reporting state |
 | --- | --- | --- | --- |
-| 1. Display a small tank arena | Pending | Not run | Unreported |
+| 1. Display a small tank arena | Complete | Windows ARM64 Debug build/run exits `0`, prints the expected 8-by-6 arena and legend, and has safe routes to extraction and mine. Focused source whitespace check passes. | Confirmed: user screenshot matches the expected rendered board and legend. |
 | 2. Apply movement with boundaries and walls | Pending | Not run | Unreported |
 | 3. Play through console commands | Pending | Not run | Unreported |
 | 4. Finish and restart rounds | Pending | Not run | Unreported |
@@ -164,4 +164,4 @@ Planning baseline: Windows/PowerShell, clean worktree at revision `8b40a8b` befo
 
 ## Resume and follow-up
 
-Await the user initiating step 1, **Display a small tank arena**. No known blocker prevents starting. The implementation remains user-led and no upcoming step has started merely because this plan was generated.
+Step 1, **Display a small tank arena**, is complete. Await the user initiating step 2, **Apply movement with boundaries and walls**. No known blocker prevents continuing, and no later step has started.
