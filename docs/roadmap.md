@@ -2,7 +2,7 @@
 
 This is the long-term sequence, not a pre-generated backlog. Generate implementation plans on demand using [Plan Generation Instructions](plan-generation-instructions.md). [Project Overview](project-overview.md) owns goals and constraints; [Progress Log](progress-log.md) owns current state.
 
-R01 is complete; R02–R10 remain planned. A completion result includes a runnable artifact, enough documentation to use it again, and honest verification records. Manual results may remain unreported without blocking progress.
+R01 is complete; R02 is in progress; R03–R10 remain planned. A completion result includes a runnable artifact, enough documentation to use it again, and honest verification records. Manual results may remain unreported without blocking progress.
 
 | ID | Milestone | Useful completion result |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Introduce the compiler/linker model, source/header boundaries, values and types,
 
 Keep the console game small. Do not require an ECS, allocator framework, templates library, scripting runtime, or graphics layer to exercise fundamentals. Reuse useful game rules later, while allowing the initial representation to be replaced when requirements change.
 
-The native development loop is covered by [IP-001](implementation-plans/IP-001-cpp-build-and-debug-loop.md), complete. The console game model is planned in [IP-002](implementation-plans/IP-002-console-tank-grid.md), pending. Future plan numbers are allocated when generated.
+The native development loop is covered by [IP-001](implementation-plans/IP-001-cpp-build-and-debug-loop.md), complete. The console game model is being implemented through [IP-002](implementation-plans/IP-002-console-tank-grid.md), in progress. Future plan numbers are allocated when generated.
 
 ## R03–R04: First engine and portability proof
 

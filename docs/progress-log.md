@@ -5,11 +5,11 @@
 - **Phase:** Console game model implementation started.
 - **Active milestone:** [R02 — Console game model](roadmap.md), in progress; R01 is complete.
 - **Active plan:** [IP-002 — Playable Console Tank Grid](implementation-plans/IP-002-console-tank-grid.md), in progress.
-- **Resume at:** Await the user initiating IP-002 step 2, apply movement with boundaries and walls.
-- **User-managed next action:** Start step 2 when ready; subsequent steps remain user-paced.
+- **Resume at:** Await the user initiating IP-002 step 3, play through console commands.
+- **User-managed next action:** Start step 3 when ready; subsequent steps remain user-paced.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** IP-002 step 1 passes: the ARM64 cache, build, run, output, exit code, row dimensions, tank placement, legend, and safe routes to extraction and mine were checked; the final focused source whitespace check is clean. The user's screenshot confirms the display.
-- **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user. IP-002 step 1 board and legend are confirmed by screenshot. Document-viewing behavior remains unreported.
+- **Latest verification:** IP-002 step 2 passes. The warning-free Windows ARM64 Debug build/run exits `0`; the fixed sequence reports the blocked wall, follows the expected route, restores the mine after the tank leaves it, and finishes at `(2, 3)`. Temporary open-board runs covered all four boundaries.
+- **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user. IP-002 steps 1 and 2 display, movement, wall, and boundary results are confirmed by screenshots. Document-viewing behavior remains unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,37 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-13 — IP-002 step 2 complete
+
+- Added scoped movement and result types plus `moveTank`, which computes a candidate position, rejects bounds before indexing, rejects walls, and commits coordinates only after validation. The board remains read-only.
+- User screenshots and source inspection covered all four directions, wall rejection, and left/top/right/bottom boundary rejection using a temporary 3-by-3 open board. Rejected moves preserved the displayed tank position.
+- The original arena and `(1, 1)` start were restored. After correcting a discarded return value, an agent warning-free Windows ARM64 Debug build/run exited `0`, reported the initial wall block, followed the eight-command route, showed the mine reappear after leaving `(3, 4)`, and finished at `(2, 3)`. The user's final build/run report agrees.
+- Evidence applies to the dirty worktree at revision `8ef7978`, including the movement source and documentation checkpoints. `git diff --check` reports no whitespace errors; Git only notes future CRLF-to-LF normalization for `main.cpp`.
+- Step 2 is complete. Next action: await the user initiating step 3, play through console commands.
+
+### 2026-09-13 — IP-002 step 2 started
+
+- The user initiated step 2, apply movement with boundaries and walls. No movement implementation has been added yet.
+- Added scoped `MoveDirection` and `MoveResult` types. Agent source review found the planned four directions and the distinct moved, boundary-blocked, and wall-blocked outcomes; the incremental Windows ARM64 Debug `tank_grid` build succeeded.
+- Added `moveTank`, which calculates a candidate coordinate, rejects negative and upper-bound violations before indexing, rejects walls, and commits coordinates only after validation. Agent source review found the state-update ordering sound; the incremental Windows ARM64 Debug `tank_grid` build succeeded.
+- Added a single-command `receiveInput` path and used its result to call `moveTank`. Agent verification reproduced ARM64 Debug warning C4715: the recursive invalid-input call does not return its result, allowing the function to reach its end without a value. The initial call also passes `isRetry = true`, so its first prompt incorrectly says the move is invalid.
+- Scripted runs confirmed that `s` moves from `(1, 1)` to `(1, 2)` and `w` is rejected by the wall with exit code `0`. An `x` followed by `s` happened to move under this build, but cannot count as valid evidence because that path has undefined behavior. EOF was not exercised because failed extraction would recursively retry without termination.
+- The user requested one-at-a-time guidance for the remainder of step 2. Interactive parsing belongs to step 3, so the immediate action is to set the premature input path aside and return `main` to a fixed movement call.
+- The premature input path was removed and replaced by a direct downward `moveTank` call. The user screenshot and agent run both show the tank moving from `(1, 1)` to `(1, 2)`; the focused ARM64 Debug build is warning-free.
+- The user changed the fixed call to `Up`; source inspection and the supplied screenshot confirm the wall-blocked result and unchanged displayed position. The screenshot shows a warning-free ARM64 Debug build.
+- The user changed the fixed call to `Right`; source inspection and the supplied screenshot confirm movement from `(1, 1)` to `(2, 1)` and a warning-free ARM64 Debug build.
+- The user changed the fixed call to `Left`; source inspection and the supplied screenshot confirm wall rejection without a moved board and a warning-free ARM64 Debug build. Together with prior runs, all four direction branches now have direct evidence.
+- The user split the blocked-result handling into distinct boundary and wall messages. Source inspection and the supplied screenshot confirm the current wall case prints `Blocked by wall.` after a warning-free build.
+- The user added a temporary 3-by-3 open board and attempted `Left` from `(0, 1)`. Source inspection and the supplied screenshot confirm `Blocked by boundary.` with the tank unchanged at the left edge after a warning-free build.
+- On the same open board, the user attempted `Up` from `(1, 0)`. Source inspection and the supplied screenshot confirm `Blocked by boundary.` with the tank unchanged at the top edge after a warning-free build.
+- On the same open board, the user attempted `Right` from `(2, 1)`. Source inspection and the supplied screenshot confirm `Blocked by boundary.` with the tank unchanged at the right edge after a warning-free build.
+- On the same open board, the user attempted `Down` from `(1, 2)`. Source inspection and the supplied screenshot confirm `Blocked by boundary.` with the tank unchanged at the bottom edge after a warning-free build. All four grid boundaries now have direct evidence.
+- The user removed the temporary boundary layout and restored the original 8-by-6 arena and `(1, 1)` start. Source inspection and the supplied screenshot confirm the warning-free direct downward move still reaches `(1, 2)`.
+- The final eight-command fixed sequence builds and moves through the planned route; output shows the mine reappearing after the tank leaves `(3, 4)`. Review found that `moveTank`'s return value is discarded while `moveResult{}` becomes `Moved`, so the blocked initial `Up` produces a duplicate board instead of the wall message; an agent run reproduced this output.
+- Reconciliation found the recorded step 1 implementation in place and a clean worktree at revision `8ef7978` before this documentation checkpoint.
+- Evidence applies to the dirty worktree at revision `8ef7978`, including the movement implementation and documentation checkpoint edits. The fixed sequence demonstrates terrain restoration, but result reporting must be corrected before step completion.
+- Next action: initialize the loop's `moveResult` directly from `moveTank` and remove the separate discarded call, then rebuild and rerun the same sequence.
 
 ### 2026-09-13 — IP-002 step 1 complete
 
