@@ -5,11 +5,11 @@
 - **Phase:** Console game model implementation started.
 - **Active milestone:** [R02 — Console game model](roadmap.md), in progress; R01 is complete.
 - **Active plan:** [IP-002 — Playable Console Tank Grid](implementation-plans/IP-002-console-tank-grid.md), in progress.
-- **Resume at:** Await the user initiating IP-002 step 3, play through console commands.
-- **User-managed next action:** Start step 3 when ready; subsequent steps remain user-paced.
+- **Resume at:** Await the user initiating IP-002 step 4, finish and restart rounds.
+- **User-managed next action:** Start step 4 when ready; subsequent steps remain user-paced.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** IP-002 step 2 passes. The warning-free Windows ARM64 Debug build/run exits `0`; the fixed sequence reports the blocked wall, follows the expected route, restores the mine after the tank leaves it, and finishes at `(2, 3)`. Temporary open-board runs covered all four boundaries.
-- **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user. IP-002 steps 1 and 2 display, movement, wall, and boundary results are confirmed by screenshots. Document-viewing behavior remains unreported.
+- **Latest verification:** IP-002 step 3 passes. Warning-free Windows ARM64 Debug builds and scripted runs cover successful movement, wall rejection, invalid-input preservation, surrounding space/tab acceptance, quit, and piped EOF with exit `0`; source review covers the non-EOF error path. The corrected message compiled, and a focused wall/invalid/quit rerun exited `0`.
+- **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user. IP-002 steps 1 and 2 display, movement, wall, and boundary results are confirmed by screenshots; the user reports the step 3 implementation tested and working. Document-viewing behavior remains unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
 
@@ -24,6 +24,27 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-14 — IP-002 step 3 complete
+
+- Corrected the boundary-result text from `boundard` to `boundary`; source inspection confirms the intended message.
+- The warning-free Windows ARM64 Debug `tank_grid` rebuild succeeded. A focused session covering a blocked wall move, invalid input, and quit passed with exit `0`; the earlier scripted movement, whitespace, invalid-input, quit, and EOF evidence remains applicable because only message text changed.
+- `git diff --check` exits `0`; Git reports only the existing future CRLF-to-LF normalization notice for `main.cpp`. Evidence applies to the dirty worktree at revision `e47a434`, including the step 3 source and documentation changes.
+- Step 3 is complete. Next action: await the user initiating step 4, finish and restart rounds.
+
+### 2026-09-14 — IP-002 step 3 functional verification
+
+- The implemented parser accepts exactly one supported command with surrounding spaces/tabs, distinguishes movement, quit, invalid input, EOF, and other stream failures, and leaves movement validation in `moveTank`.
+- The Windows ARM64 Debug `tank_grid` build succeeded. Scripted sessions passed movement to `(1, 2)`, wall rejection, empty/spaces/unknown/`ww` rejection without movement, tab-padded `w`, space-padded `d` to `(2, 1)`, clean quit, and piped EOF; all processes exited `0`.
+- Source review found one user-visible typo: the boundary result prints `Blocked by boundard.`. The user reports their interactive testing otherwise works. Evidence applies to the dirty worktree at revision `e47a434`, including the step 3 source and documentation changes.
+- Step 3 remains in progress only for that typo. Next action: change `boundard` to `boundary`, then repeat the focused build/run check.
+
+### 2026-09-14 — IP-002 step 3 started
+
+- The user initiated step 3, play through console commands, and requested a code snippet with a brief explanation of the logic.
+- Source reconciliation confirms the completed step 2 implementation is intact and still drives `moveTank` through a fixed command sequence; no step 3 source change or verification exists yet.
+- Evidence applies at revision `e47a434` with only the requested plan-status documentation changes currently dirty. No known blocker prevents step 3.
+- Next action: replace the fixed sequence with validated line parsing and a console loop, then build and exercise successful, blocked, invalid, quit, and EOF paths.
 
 ### 2026-09-13 — IP-002 step 2 complete
 

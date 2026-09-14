@@ -26,6 +26,8 @@ State the bounded work and important exclusions. Link relevant decisions and pre
 
 ## Implementation steps
 
+Identify completed and active steps in their headings so status remains visible while scrolling: ✅ **Complete** or 🚧 **In progress**. Leave pending step headings unmarked when implementation proceeds sequentially. Keep heading indicators synchronized with the detailed state table.
+
 ### 1. First useful increment
 
 **Build:** What to implement and where, once the repository structure is known.

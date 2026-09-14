@@ -29,7 +29,7 @@ Include:
 1. Identifier, title, roadmap milestone, status, ownership, dependencies, and resume pointer.
 2. Concrete outcome, scope boundaries, and observable acceptance criteria.
 3. Brief unfamiliar concepts introduced at their point of use, with focused references when needed.
-4. Ordered steps specifying what to change, expected behavior, and a suitable verification checkpoint.
+4. Ordered steps specifying what to change, expected behavior, and a suitable verification checkpoint. Mark completed and active steps directly in their headings; sequential pending steps need no heading indicator.
 5. Exact commands once the toolchain/environment is known. Label illustrative or environment-dependent commands clearly; do not present guesses as ready-to-run instructions.
 6. User checks for subjective or inaccessible device behavior, kept short and optional to report.
 7. A compact current-state table and links to relevant evidence and decisions.
@@ -64,7 +64,7 @@ Manual state is **unreported**, **confirmed**, or **issue reported**. Passing to
 
 After generation, validate local links, add the plan to [Implementation Plans](implementation-plans/README.md), and update the active-plan pointer in the Progress Log if it becomes current. Do not mark implementation started just because a plan exists.
 
-During execution, update step state and checkpoints after meaningful progress. Rewrite the resume pointer to the exact next action. Keep detailed historical evidence in the Progress Log and reference it from the plan.
+During execution, update step state and checkpoints after meaningful progress. Keep complete and in-progress heading indicators synchronized with the plan's state table; omit indicators from pending headings when steps are sequential. Rewrite the resume pointer to the exact next action. Keep detailed historical evidence in the Progress Log and reference it from the plan.
 
 If scope changes, update the plan and briefly record why. Preserve earlier evidence with its original context. Significant architecture changes require an `AD-NNN` record; ordinary local implementation choices do not.
 

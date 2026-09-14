@@ -18,6 +18,53 @@ enum class MoveResult
     BlockedByWall
 };
 
+enum class CommandKind
+{
+    Move,
+    Quit,
+    Invalid
+};
+
+struct ParsedCommand
+{
+    CommandKind kind{CommandKind::Invalid};
+    MoveDirection direction{MoveDirection::Up};
+};
+
+ParsedCommand parseCommand(const std::string& line)
+{
+    const auto first{line.find_first_not_of(" \t")};
+
+    if (first == std::string::npos)
+    {
+        return {};
+    }
+
+    const auto last{line.find_last_not_of(" \t")};
+
+    // Exactly one non-whitespace character is permitted
+    if (first != last)
+    {
+        return {};
+    }
+
+    switch (line[first])
+    {
+        case 'w':
+            return {CommandKind::Move, MoveDirection::Up};
+        case 'a':
+            return {CommandKind::Move, MoveDirection::Left};
+        case 's':
+            return {CommandKind::Move, MoveDirection::Down};
+        case 'd':
+            return {CommandKind::Move, MoveDirection::Right};
+        case 'q':
+            return {CommandKind::Quit, MoveDirection::Up};
+        default:
+            return {};
+    }
+}
+
 MoveResult moveTank(
     const std::vector<std::string>& board,
     int& tankX,
@@ -103,6 +150,7 @@ void renderBoard(
     }
 
     std::cout << "Legend: T=tank, .=floor, #=wall, *=mine, E=extraction\n";
+    std::cout << "Commands: w=up, a=left, s=down, d=right, q=quit\n";
 }
 
 int main()
@@ -120,28 +168,43 @@ int main()
 
     renderBoard(board, tankX, tankY);
 
-    const std::vector<MoveDirection> moves{
-        MoveDirection::Up,
-        MoveDirection::Down,
-        MoveDirection::Down,
-        MoveDirection::Right,
-        MoveDirection::Down,
-        MoveDirection::Right,
-        MoveDirection::Left,
-        MoveDirection::Up
-    };
-
-    for (MoveDirection move : moves)
+    while (true)
     {
-        MoveResult moveResult{
-            moveTank(board, tankX, tankY, move)
+        std::cout << "\nEnter command: ";
+
+        std::string line;
+
+        if (!std::getline(std::cin, line))
+        {
+            if (std::cin.eof() && !std::cin.bad())
+            {
+                std::cout << "\nEnd of input.\n";
+                break;
+            }
+
+            std::cerr << "\nFailed to read input.\n";
+            return 1;
+        }
+
+        const ParsedCommand command{parseCommand(line)};
+
+        if (command.kind == CommandKind::Invalid)
+        {
+            std::cout << "Invalid command. Enter exactly one of: w, a, s, d, q.\n";
+            continue;
+        }
+
+        if (command.kind == CommandKind::Quit)
+        {
+            std::cout << "Goodbye.\n";
+            break;
+        }
+
+        const MoveResult moveResult{
+            moveTank(board, tankX, tankY, command.direction)
         };
 
-        if (moveResult == MoveResult::Moved)
-        {
-            renderBoard(board, tankX, tankY);
-        }
-        else if (moveResult == MoveResult::BlockedByBoundary)
+        if (moveResult == MoveResult::BlockedByBoundary)
         {
             std::cout << "Blocked by boundary.\n";
         }
@@ -149,6 +212,8 @@ int main()
         {
             std::cout << "Blocked by wall.\n";
         }
+
+        renderBoard(board, tankX, tankY);
     }
 
     return 0;

@@ -6,7 +6,7 @@
 | Status | In progress |
 | Implementation owner | User; agent provides explanations, hints, review, and verification unless asked to implement |
 | Depends on | [IP-001](IP-001-cpp-build-and-debug-loop.md), complete; existing C++20 CMake project and verified Windows ARM64 development loop |
-| Resume at | Await the user initiating step 3, play through console commands |
+| Resume at | Await the user initiating step 4, finish and restart rounds |
 
 ## Outcome
 
@@ -54,7 +54,9 @@ Accept lowercase commands with optional surrounding spaces or tabs. Uppercase su
 
 These steps define the requested plan. Implementation remains pending until the user initiates each step; deliver detailed session guidance at that pace.
 
-### 1. Display a small tank arena
+Completed and active steps are identified in their headings for at-a-glance navigation: ✅ **Complete** or 🚧 **In progress**. Pending steps have no indicator because implementation proceeds sequentially. The detailed evidence remains in the state table below.
+
+### 1. Display a small tank arena — ✅ Complete
 
 **Build:** Add the new directory, `main.cpp`, and `tank_grid` CMake target with C++20 required and compiler extensions disabled, following the existing target's settings. Begin with one source file. Define the fixed arena, starting position, and a renderer that overlays the tank on terrain. A `std::vector<std::string>` is a suitable initial board representation. Keep rows nonempty and equal in length and choose an in-bounds start on floor. Print the board and legend once, then exit.
 
@@ -64,7 +66,7 @@ These steps define the requested plan. Implementation remains pending until the 
 
 **Checkpoint:** The new target displays the initial arena. Record the chosen layout and start in source; keep implementation details there authoritative.
 
-### 2. Apply movement with boundaries and walls
+### 2. Apply movement with boundaries and walls — ✅ Complete
 
 **Build:** Introduce a movement command type using `enum class` and a game update function. Compute a candidate position, check the grid bounds, then inspect terrain before committing the move. Return enough information for the caller to describe a moved or blocked result; keep output in the caller. For now, exercise a short fixed sequence from `main`; mines and extraction remain traversable markers until step 4.
 
@@ -74,7 +76,7 @@ These steps define the requested plan. Implementation remains pending until the 
 
 **Checkpoint:** Movement rules work independently of keyboard input; record tested boundaries.
 
-### 3. Play through console commands
+### 3. Play through console commands — ✅ Complete
 
 **Build:** Replace the fixed command sequence with a line-based loop using `std::getline`. Parse exactly one supported command after trimming spaces/tabs, then update and redraw. Support movement and `q` now; step 4 adds `r`. Invalid input should display help and request another line without moving. Handle EOF and other stream failures according to the game contract.
 
@@ -155,7 +157,7 @@ Compare the original exercise's output with its [README](../../projects/exercise
 | --- | --- | --- | --- |
 | 1. Display a small tank arena | Complete | Windows ARM64 Debug build/run exits `0`, prints the expected 8-by-6 arena and legend, and has safe routes to extraction and mine. Focused source whitespace check passes. | Confirmed: user screenshot matches the expected rendered board and legend. |
 | 2. Apply movement with boundaries and walls | Complete | Source review plus a warning-free Windows ARM64 Debug build/run confirm candidate-first updates, wall rejection, exit `0`, the final fixed route, mine restoration, and final position `(2, 3)`. Temporary open-board runs covered all four boundaries. | Confirmed: screenshots cover all directions, wall rejection, all four boundaries, the restored arena, and the corrected fixed sequence. |
-| 3. Play through console commands | Pending | Not run | Unreported |
+| 3. Play through console commands | Complete | Warning-free Windows ARM64 Debug builds pass. Scripted runs cover successful movement, wall rejection, empty/spaces/unknown/`ww` rejection, space/tab-padded commands, quit, and piped EOF with exit `0`; source review covers the non-EOF failure branch. A focused rerun passed after correcting the boundary-message typo. | Confirmed: user reports the implementation tested and working. |
 | 4. Finish and restart rounds | Pending | Not run | Unreported |
 | 5. Separate and verify game rules | Pending | Not run | Unreported |
 | 6. Document and verify the complete exercise | Pending | Not run | Unreported |
@@ -164,4 +166,4 @@ Planning baseline: Windows/PowerShell, clean worktree at revision `8b40a8b` befo
 
 ## Resume and follow-up
 
-Steps 1 and 2 are complete. Await the user initiating step 3, **Play through console commands**. No known blocker prevents continuing, and no later step has started.
+Steps 1–3 are complete. Await the user initiating step 4, **Finish and restart rounds**. No known blocker prevents continuing, and no later step has started.
