@@ -11,18 +11,35 @@ enum class MoveDirection
     Right
 };
 
+enum class RoundStatus
+{
+    Playing,
+    Won,
+    Lost
+};
+
 enum class MoveResult
 {
     Moved,
     BlockedByBoundary,
-    BlockedByWall
+    BlockedByWall,
+    RoundFinished
 };
 
 enum class CommandKind
 {
     Move,
+    Restart,
     Quit,
     Invalid
+};
+
+struct GameState
+{
+    std::vector<std::string> board;
+    int tankX{};
+    int tankY{};
+    RoundStatus roundStatus{RoundStatus::Playing};
 };
 
 struct ParsedCommand
@@ -30,6 +47,23 @@ struct ParsedCommand
     CommandKind kind{CommandKind::Invalid};
     MoveDirection direction{MoveDirection::Up};
 };
+
+GameState makeInitialGameState()
+{
+    return {
+        {
+            "########",
+            "#......#",
+            "#.##...#",
+            "#...#E.#",
+            "#..*...#",
+            "########"
+        },
+        1,
+        1,
+        RoundStatus::Playing
+    };
+}
 
 ParsedCommand parseCommand(const std::string& line)
 {
@@ -60,6 +94,8 @@ ParsedCommand parseCommand(const std::string& line)
             return {CommandKind::Move, MoveDirection::Right};
         case 'q':
             return {CommandKind::Quit, MoveDirection::Up};
+        case 'r':
+            return {CommandKind::Restart, MoveDirection::Up};
         default:
             return {};
     }
@@ -150,23 +186,14 @@ void renderBoard(
     }
 
     std::cout << "Legend: T=tank, .=floor, #=wall, *=mine, E=extraction\n";
-    std::cout << "Commands: w=up, a=left, s=down, d=right, q=quit\n";
+    std::cout << "Commands: w=up, a=left, s=down, d=right, r=restart, q=quit\n";
 }
 
 int main()
 {
-    const std::vector<std::string> board{
-        "########",
-        "#......#",
-        "#.##...#",
-        "#...#E.#",
-        "#..*...#",
-        "########"
-    };
-    int tankX{1};
-    int tankY{1};
+    GameState game{makeInitialGameState()};
 
-    renderBoard(board, tankX, tankY);
+    renderBoard(game.board, game.tankX, game.tankY);
 
     while (true)
     {
@@ -190,7 +217,7 @@ int main()
 
         if (command.kind == CommandKind::Invalid)
         {
-            std::cout << "Invalid command. Enter exactly one of: w, a, s, d, q.\n";
+            std::cout << "Invalid command. Enter exactly one of: w, a, s, d, r, q.\n";
             continue;
         }
 
@@ -200,8 +227,17 @@ int main()
             break;
         }
 
+        if (command.kind == CommandKind::Restart)
+        {
+            game = makeInitialGameState();
+
+            std::cout << "Round restarted.\n";
+            renderBoard(game.board, game.tankX, game.tankY);
+            continue;
+        }
+
         const MoveResult moveResult{
-            moveTank(board, tankX, tankY, command.direction)
+            moveTank(game.board, game.tankX, game.tankY, command.direction)
         };
 
         if (moveResult == MoveResult::BlockedByBoundary)
@@ -213,7 +249,7 @@ int main()
             std::cout << "Blocked by wall.\n";
         }
 
-        renderBoard(board, tankX, tankY);
+        renderBoard(game.board, game.tankX, game.tankY);
     }
 
     return 0;

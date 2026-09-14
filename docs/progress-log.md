@@ -5,10 +5,10 @@
 - **Phase:** Console game model implementation started.
 - **Active milestone:** [R02 — Console game model](roadmap.md), in progress; R01 is complete.
 - **Active plan:** [IP-002 — Playable Console Tank Grid](implementation-plans/IP-002-console-tank-grid.md), in progress.
-- **Resume at:** Await the user initiating IP-002 step 4, finish and restart rounds.
-- **User-managed next action:** Start step 4 when ready; subsequent steps remain user-paced.
+- **Resume at:** IP-002 step 4 is paused; resume by refactoring `moveTank` to accept `GameState&`.
+- **User-managed next action:** Resume step 4 when ready; subsequent steps remain user-paced.
 - **Known blockers:** None. Windows PowerShell currently uses its default `Restricted` execution policy, so launching the developer-shell script from ordinary PowerShell needs a process-scoped bypass, a user-scoped policy change, or the Developer Command Prompt.
-- **Latest verification:** IP-002 step 3 passes. Warning-free Windows ARM64 Debug builds and scripted runs cover successful movement, wall rejection, invalid-input preservation, surrounding space/tab acceptance, quit, and piped EOF with exit `0`; source review covers the non-EOF error path. The corrected message compiled, and a focused wall/invalid/quit rerun exited `0`.
+- **Latest verification:** The partial IP-002 step 4 implementation builds for Windows ARM64 Debug. A scripted `d`, `r`, `q` session confirms restart during play restores the initial board and tank position and exits `0`; win/loss and finished-round behavior remain unimplemented. IP-002 step 3's earlier command and input evidence remains applicable.
 - **Manual reporting:** IP-001 steps 1–5 build, run, architecture, and debugger results are confirmed by the user. IP-002 steps 1 and 2 display, movement, wall, and boundary results are confirmed by screenshots; the user reports the step 3 implementation tested and working. Document-viewing behavior remains unreported.
 - **Open details:** Confirm phone variant, RAM, OS, and actual refresh behavior when Android testing becomes relevant. Record graphics driver/backend capabilities during the portability milestone.
 - **Technical decisions:** [AD-001](architecture-decisions/AD-001-initial-engine-direction.md), [AD-002](architecture-decisions/AD-002-documentation-and-continuity.md).
@@ -24,6 +24,20 @@ Manual results are **unreported**, **confirmed**, or **issue reported**. Unrepor
 Do not store large raw logs, binaries, or captures here. Reference evidence artifacts when needed. Once history becomes cumbersome, move older entries into dated archives with an index and preserve useful links.
 
 ## Checkpoint history
+
+### 2026-09-14 — IP-002 step 4 paused after restart-during-play support
+
+- Added explicit round-status and game-state types, a single `makeInitialGameState` construction path, restart command parsing and help, startup through the factory, and restart handling during play. `RoundFinished` exists as a result value but is not used yet.
+- The Windows ARM64 Debug `tank_grid` build succeeded. A scripted `d`, `r`, `q` session moved to `(2, 1)`, restored the initial board and `(1, 1)` position, quit normally, and exited `0`.
+- Win/loss detection, movement rejection after a finished round, and outcome/restart messaging remain unimplemented and unverified. Evidence applies to the dirty worktree at revision `14df5a7`; `git diff --check` reports no whitespace errors and only the existing future CRLF-to-LF normalization notice for `main.cpp`.
+- The user requested a pause. Resume step 4 by refactoring `moveTank` to accept `GameState&`; do not advance to step 5.
+
+### 2026-09-14 — IP-002 step 4 started
+
+- The user initiated step 4, finish and restart rounds, and requested step-by-step implementation instructions.
+- Reconciliation confirms the completed step 3 implementation is intact: the single-file game accepts validated movement and quit commands, enforces walls and boundaries, redraws after movement attempts, and cleanly handles EOF and other input failures.
+- No step 4 source change or verification exists yet. Evidence applies at clean revision `14df5a7` before this documentation checkpoint; no known blocker prevents step 4.
+- Next action: add explicit round state and a shared initial-state construction path, then implement outcome detection, finished-round movement rejection, and restart handling.
 
 ### 2026-09-14 — IP-002 step 3 complete
 

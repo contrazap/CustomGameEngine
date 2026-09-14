@@ -6,7 +6,7 @@
 | Status | In progress |
 | Implementation owner | User; agent provides explanations, hints, review, and verification unless asked to implement |
 | Depends on | [IP-001](IP-001-cpp-build-and-debug-loop.md), complete; existing C++20 CMake project and verified Windows ARM64 development loop |
-| Resume at | Await the user initiating step 4, finish and restart rounds |
+| Resume at | Step 4 paused: refactor `moveTank` to accept `GameState&` |
 
 ## Outcome
 
@@ -86,7 +86,7 @@ Completed and active steps are identified in their headings for at-a-glance navi
 
 **Checkpoint:** The player can navigate the arena and leave the program predictably.
 
-### 4. Finish and restart rounds
+### 4. Finish and restart rounds — 🚧 In progress
 
 **Build:** Add explicit playing, won, and lost states. After a successful move, inspect the destination tile and apply the outcome. Print the final board and a clear outcome message. Ignore movement after a round ends, and support `r` and `q`. Use one initial-state construction path for both startup and restart so all round state resets together.
 
@@ -158,7 +158,7 @@ Compare the original exercise's output with its [README](../../projects/exercise
 | 1. Display a small tank arena | Complete | Windows ARM64 Debug build/run exits `0`, prints the expected 8-by-6 arena and legend, and has safe routes to extraction and mine. Focused source whitespace check passes. | Confirmed: user screenshot matches the expected rendered board and legend. |
 | 2. Apply movement with boundaries and walls | Complete | Source review plus a warning-free Windows ARM64 Debug build/run confirm candidate-first updates, wall rejection, exit `0`, the final fixed route, mine restoration, and final position `(2, 3)`. Temporary open-board runs covered all four boundaries. | Confirmed: screenshots cover all directions, wall rejection, all four boundaries, the restored arena, and the corrected fixed sequence. |
 | 3. Play through console commands | Complete | Warning-free Windows ARM64 Debug builds pass. Scripted runs cover successful movement, wall rejection, empty/spaces/unknown/`ww` rejection, space/tab-padded commands, quit, and piped EOF with exit `0`; source review covers the non-EOF failure branch. A focused rerun passed after correcting the boundary-message typo. | Confirmed: user reports the implementation tested and working. |
-| 4. Finish and restart rounds | Pending | Not run | Unreported |
+| 4. Finish and restart rounds | In progress; paused after restart-during-play support | ARM64 Debug build passes; scripted `d`, `r`, `q` restores the initial board and position and exits `0`. Win/loss and finished-round behavior are not implemented or verified. | Unreported |
 | 5. Separate and verify game rules | Pending | Not run | Unreported |
 | 6. Document and verify the complete exercise | Pending | Not run | Unreported |
 
@@ -166,4 +166,4 @@ Planning baseline: Windows/PowerShell, clean worktree at revision `8b40a8b` befo
 
 ## Resume and follow-up
 
-Steps 1–3 are complete. Await the user initiating step 4, **Finish and restart rounds**. No known blocker prevents continuing, and no later step has started.
+Steps 1–3 are complete. Step 4, **Finish and restart rounds**, is paused at the user's request after adding the round-state types, unified initial-state factory, restart parsing/help, and restart-during-play handling. Resume by refactoring `moveTank` to accept `GameState&`; win/loss and finished-round behavior remain. No known blocker prevents continuing, and no later step has started.
